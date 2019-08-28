@@ -1,6 +1,7 @@
 const express = require('express');
 const postController = require('../controller/post.controller');
 const multer = require('multer');
+const authGuard = require('../middleware/checkAuth.middleware');
 const router = express.Router();
 const MIME_TYPE_MAP =
 {
@@ -24,10 +25,10 @@ const storage = multer.diskStorage({
   }
 })
 
-router.post('/posts', multer({ storage: storage }).single('image'), postController.savePost);
+router.post('/posts', authGuard, multer({ storage: storage }).single('image'), postController.savePost);
 router.get('/posts', postController.getPosts);
 router.get('/posts/:id', postController.getPostsById);
-router.put('/posts/:id', multer({ storage: storage }).single('image'), postController.updatePosts);
-router.delete('/posts/:id', postController.deletePosts);
+router.put('/posts/:id', authGuard, multer({ storage: storage }).single('image'), postController.updatePosts);
+router.delete('/posts/:id', authGuard, postController.deletePosts);
 
 module.exports = router;

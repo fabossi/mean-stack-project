@@ -1,11 +1,17 @@
 <mat-toolbar color="primary">
   <span><a mat-button routerLink="/"> MyMessages!</a></span>
   <ul>
-    <li>
-      <a mat-button routerLink="create" routerLinkActive="mat-warn">New post</a>
+    <li *ngIf="isLoggedIn">
+      <a mat-button routerLink="/create" routerLinkActive="mat-warn">New post</a>
     </li>
-    <li>
-      <a mat-button routerLink="login" routerLinkActive="mat-warn">Login</a>
+    <li *ngIf="!isLoggedIn">
+      <a mat-button routerLink="/login" routerLinkActive="mat-warn">Login</a>
+    </li>
+    <li *ngIf="!isLoggedIn">
+      <a mat-button routerLink="/signup" routerLinkActive="mat-warn">Signup</a>
+    </li>
+    <li *ngIf="isLoggedIn">
+      <button (click)="onLogout()" mat-button>Logout</button>
     </li>
   </ul>
 </mat-toolbar>

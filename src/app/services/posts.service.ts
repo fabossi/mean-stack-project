@@ -13,6 +13,7 @@ export class PostsService {
   LOCAL_URL = '';
   private posts: Post[] = [];
   private postsUpdated = new Subject<{ post: Post[], postCount: number }>();
+
   constructor(private http: HttpClient, private router: Router) {
     if (!environment.production) {
       this.LOCAL_URL = 'http://localhost:3000';
@@ -29,7 +30,8 @@ export class PostsService {
               title: post.title,
               content: post.content,
               id: post._id,
-              imagePath: post.imagePath
+              imagePath: post.imagePath,
+              creator: post.creator
             };
           }),
           maxPosts: postData.maxPosts
@@ -63,7 +65,7 @@ export class PostsService {
 
   getPost(id: string) {
     return this.http
-      .get<{ _id: string, title: string, content: string, imagePath: string }>(this.LOCAL_URL + '/api/posts/' + id);
+      .get<{ _id: string, title: string, content: string, imagePath: string, creator: string }>(this.LOCAL_URL + '/api/posts/' + id);
   }
 
   updatePost(id: string, title: string, content: string, image: File | string) {
@@ -75,7 +77,7 @@ export class PostsService {
       postData.append('content', content);
       postData.append('image', image, title);
     } else {
-      postData = { id, title, content, imagePath: image };
+      postData = { id, title, content, imagePath: image, creator: null };
     }
     this.http.put(this.LOCAL_URL + '/api/posts/' + id, postData)
       .subscribe((response) => {

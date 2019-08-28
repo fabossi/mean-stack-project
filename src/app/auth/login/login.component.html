@@ -1,14 +1,16 @@
 <mat-card>
   <mat-spinner *ngIf="isLoading" mode='indeterminate'></mat-spinner>
-  <form (submit)="onLogin(loginForm)" #loginForm *ngIf="!isLoading">
+  <form (submit)="onLogin(loginForm)" #loginForm="ngForm" *ngIf="!isLoading">
     <mat-form-field>
-      <input matInput type="email" name="email" ngModel #email="ngModel" placeholder="write your email here" required email/>
+      <input matInput type="email" autocomplete="username" name="email" ngModel #email="ngModel"
+        placeholder="write your email here" required email />
       <mat-error *ngIf="email.invalid">Please fill field email</mat-error>
     </mat-form-field>
     <mat-form-field>
-      <input matInput type="password" name="password" ngModel #password="ngModel" placeholder="write the password here" required/>
+      <input matInput type="password" autocomplete="current-password" name="password" ngModel #password="ngModel"
+        placeholder="write the password here" required />
       <mat-error *ngIf="password.invalid">Please fill field password</mat-error>
     </mat-form-field>
-    <button class='button' mat-raised-button color="primary" type="button">login</button>
+    <button class='button' mat-raised-button color="primary" type="submit" *ngIf="!isLoading">Login</button>
   </form>
 </mat-card>

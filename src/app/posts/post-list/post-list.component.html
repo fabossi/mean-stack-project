@@ -6,7 +6,7 @@
       <img [src]="p?.imagePath" [alt]="p?.title">
     </div>
     <p>{{p?.content}}</p>
-    <mat-action-row>
+    <mat-action-row *ngIf="isLoggedIn && userId === p?.creator">
       <a mat-button color="primary" [routerLink]="['/edit', p?.id]">Edit</a>
       <button mat-button color="warn" (click)="onDelete(p?.id)">Delete</button>
     </mat-action-row>
