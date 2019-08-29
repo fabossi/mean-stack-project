@@ -2,7 +2,6 @@ const express = require('express');
 const path = require('path');
 const cors = require('cors');
 const bodyParser = require('body-parser');
-const Post = require('./models/post.model');
 const postsRoute = require('./routes/post.route');
 const usersRoute = require('./routes/user.route');
 const mongoose = require('mongoose');
@@ -12,8 +11,9 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
-mongoose.connect(`
-mongodb+srv://root:W61fEaRfuoLe3ClZ@fabossi-website-7jcsx.mongodb.net/meanStack?retryWrites=true&w=majority`,
+mongoose.connect(
+  "mongodb+srv://" + process.env.user_mongo + ":" + process.env.pw_mongo +
+  "@fabossi-website-7jcsx.mongodb.net/meanStack?retryWrites=true&w=majority",
   { useNewUrlParser: true })
   .then(() => {
     console.log('connected');
