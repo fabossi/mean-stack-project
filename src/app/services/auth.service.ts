@@ -111,6 +111,8 @@ export class AuthService {
           this.saveAuthData(token, expirationDate, this.userId);
           this.route.navigate(['/']);
         }
+      }, error => {
+        this.authStatusListener.next(false);
       });
   }
 

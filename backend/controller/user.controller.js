@@ -10,16 +10,19 @@ exports.signUp = (req, res) => {
         email: req.body.email,
         password: hashedPassword
       });
-      user.save().then((createdUser) => {
-        res.status(201).json(
-          {
-            msg: 'User added succesfully!',
-            res: createdUser
-          });
-      }).catch(err => {
-        console.error(err);
-        res.status(500).json({ err: err })
-      })
+      user.save()
+        .then((createdUser) => {
+          res.status(201).json(
+            {
+              message: 'User added succesfully!',
+              res: createdUser
+            });
+        }).catch(err => {
+          console.error(err);
+          res.status(500).json({
+            message: 'Invalid authentication credentials!'
+          })
+        })
     }).catch(err => console.error(err));
 }
 
@@ -50,5 +53,9 @@ exports.loginUser = (req, res) => {
           expiresIn: 3600,
           userId: fetchedUser._id
         });
-    }).catch(err => res.status(500).json({ err: err }));
+    }).catch(err => res.status(500)
+      .json(
+        {
+          message: 'Invalid credentials, try again!'
+        }));
 }

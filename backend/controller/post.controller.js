@@ -1,6 +1,5 @@
 const Post = require('../models/post.model');
 
-
 exports.savePost = (req, res) => {
   const url = req.protocol + '://' + req.get("host");
   const post = new Post({
@@ -12,13 +11,19 @@ exports.savePost = (req, res) => {
   post.save().then((createdPost) => {
     res.status(201).json(
       {
-        msg: 'posts added succesfully!',
+        message: 'posts added succesfully!',
         post: {
           ...createdPost,
           id: createdPost._id,
         }
       });
-  }).catch(err => console.err(err));;
+  }).catch(err => {
+    console.err(err); res.status(500)
+      .json(
+        {
+          message: 'Ops, an error ocurred, try again later!'
+        })
+  });;
 }
 
 exports.updatePosts = (req, res) => {
@@ -37,9 +42,9 @@ exports.updatePosts = (req, res) => {
   Post.updateOne({ _id: req.params.id, creator: req.userData.userId }, post)
     .then(result => {
       if (result.nModified > 0) {
-        res.status(200).json({ msg: 'update succesfull!' });
+        res.status(200).json({ message: 'update succesfull!' });
       } else {
-        res.status(401).json({ msg: 'Update Unauthorized!' });
+        res.status(401).json({ error: 'Update Unauthorized!' });
       }
     })
     .catch(err => console.error(err));
@@ -73,7 +78,7 @@ exports.getPostsById = (req, res) => {
       if (post) {
         res.status(200).json(post);
       } else {
-        res.status(404).json({ msg: 'Post not found' });
+        res.status(404).json({ error: 'Post not found' });
       }
     });
 }
@@ -84,7 +89,7 @@ exports.deletePosts = (req, res) => {
       if (result.n > 0) {
         res.status(200).json({ message: 'Post Deleted', res: result });
       } else {
-        res.status(401).json({ msg: 'Unauthorized!' });
+        res.status(401).json({ error: 'Unauthorized!' });
       }
     }).catch(err => console.err(err));
 }
