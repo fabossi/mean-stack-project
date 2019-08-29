@@ -21,7 +21,7 @@ exports.savePost = (req, res) => {
     console.err(err); res.status(500)
       .json(
         {
-          message: 'Ops, an error ocurred, try again later!'
+          message: 'Creating a post failed, try again later!'
         })
   });;
 }
@@ -41,13 +41,13 @@ exports.updatePosts = (req, res) => {
   });
   Post.updateOne({ _id: req.params.id, creator: req.userData.userId }, post)
     .then(result => {
-      if (result.nModified > 0) {
+      if (result.n > 0) {
         res.status(200).json({ message: 'update succesfull!' });
       } else {
-        res.status(401).json({ error: 'Update Unauthorized!' });
+        res.status(401).json({ message: 'Update Unauthorized!' });
       }
     })
-    .catch(err => console.error(err));
+    .catch(err => { console.error(err); res.status(401).json({ error: 'Update failed! try again.' }) });
 }
 
 exports.getPosts = (req, res) => {
@@ -69,6 +69,8 @@ exports.getPosts = (req, res) => {
         posts: fetchedPosts,
         maxPosts: count
       });
+  }).catch(error => {
+    res.status(500).json({ message: 'Fetching posts failed, try again!' });
   })
 }
 
@@ -80,6 +82,8 @@ exports.getPostsById = (req, res) => {
       } else {
         res.status(404).json({ error: 'Post not found' });
       }
+    }).catch(error => {
+      res.status(500).json({ message: 'Failed to fetch your posts, try again!' });
     });
 }
 
@@ -91,6 +95,10 @@ exports.deletePosts = (req, res) => {
       } else {
         res.status(401).json({ error: 'Unauthorized!' });
       }
-    }).catch(err => console.err(err));
+    }).catch(err =>
+      res.status(500)
+        .json(
+          { message: 'Failed to delete this post, try again!' }
+        ));
 }
 
