@@ -19,7 +19,6 @@ mongoose.connect(
     console.log('connected');
   }).catch(err => console.error(err));
 
-
 app.use('/images', express.static(path.join('backend/images')));
 app.use('/api/', postsRoute);
 app.use('/api/', usersRoute);
