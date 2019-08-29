@@ -20,8 +20,6 @@ import { PostCreateComponent } from './posts/post-create/post-create.component';
 import { HeaderComponent } from './header/header.component';
 import { PostListComponent } from './posts/post-list/post-list.component';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { LoginComponent } from './auth/login/login.component';
-import { SignupComponent } from './auth/signup/signup.component';
 import { AuthInterceptor } from './auth/auth-interceptor';
 import { ErrorInterceptor } from './error-interceptor';
 import { ErrorComponent } from './error/error.component';
@@ -33,8 +31,6 @@ import { ErrorComponent } from './error/error.component';
     PostCreateComponent,
     HeaderComponent,
     PostListComponent,
-    LoginComponent,
-    SignupComponent,
     ErrorComponent,
   ],
   imports: [
